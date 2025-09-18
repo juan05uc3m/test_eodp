@@ -53,9 +53,11 @@ class l1b(initL1b):
 
         self.logger.info("End of the L1B Module!")
 
-
+    #Ecualización
     def equalization(self, toa, eq_add, eq_mult):
         """
+        Hay que implementar la funcion aqui:
+        TOAreal = (TOAmeasured - eq_add)/eq_mult)
         Equlization. Apply an offset and a gain.
         :param toa: TOA in DN
         :param eq_add: Offset in DN
@@ -63,6 +65,7 @@ class l1b(initL1b):
         :return: TOA in DN, equalized
         """
         #TODO
+        toa = (toa - eq_add) / eq_mult
         return toa
 
     def restoration(self,toa,gain):
@@ -73,6 +76,7 @@ class l1b(initL1b):
         :return: TOA in radiances [mW/sr/m2]
         """
         #TODO
+        toa = toa * gain
         self.logger.debug('Sanity check. TOA in radiances after gain application ' + str(toa[1,-1]) + ' [mW/m2/sr]')
 
         return toa
