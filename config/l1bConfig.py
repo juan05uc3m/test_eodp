@@ -7,8 +7,9 @@ class l1bConfig:
 
     def __init__(self):
 
+        #Aqui se pone la ecualizacion o no
         # Flags to enable or disable the equalization
-        self.do_equalization = False
+        self.do_equalization = True
 
         # Auxiliary inputs (relative paths to the root folder)
         #--------------------------------------------------------------------------------
