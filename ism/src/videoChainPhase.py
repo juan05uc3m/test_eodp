@@ -45,6 +45,10 @@ class videoChainPhase(initIsm):
 
         return toa
 
+
+    #******************************************************************************#
+    #Aqui se convierte de elctrones a voltios
+    #Completamos esta fucnion y la siguiente
     def electr2Volt(self, toa, OCF, gain_adc):
         """
         Electron to Volts conversion.
@@ -56,8 +60,13 @@ class videoChainPhase(initIsm):
         :return: output toa in [V]
         """
         #TODO
+
+        toa = toa * OCF * gain_adc
+
         return toa
 
+
+    #Convertimos a valores digitales
     def digitisation(self, toa, bit_depth, min_voltage, max_voltage):
         """
         Digitisation - conversion from Volts to Digital counts
@@ -68,5 +77,7 @@ class videoChainPhase(initIsm):
         :return: toa in digital counts
         """
         #TODO
+        toa_dn = np.round(((toa - min_voltage) / (max_voltage - min_voltage)) * (2 ** bit_depth - 1))
+        toa_dn = np.clip(toa_dn, 0, 2 ** bit_depth - 1)
         return toa_dn
 
