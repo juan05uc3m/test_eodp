@@ -94,8 +94,7 @@ class detectionPhase(initIsm):
 
         return toa
 
-    #Funcion para pasar de radiacion a fotones
-    #************************************************************************#
+
     def irrad2Phot(self, toa, area_pix, tint, wv):
         """
         Conversion of the input Irradiances to Photons
@@ -106,15 +105,8 @@ class detectionPhase(initIsm):
         :return: Toa in photons
         """
         #TODO
-        h = self.constants.h_planck  # Constante de Planck
-        c = self.constants.speed_light  # Velocidad de la luz
-        Ephoton = (h * c) / wv
-        Ein = (tint * area_pix * toa) * 10 ** -3
-        toa_ph = Ein / Ephoton
         return toa_ph
 
-    #Funcion para pasar de fotones a electrones
-    #*************************************************************************#
     def phot2Electr(self, toa, QE):
         """
         Conversion of photons to electrons
@@ -123,10 +115,8 @@ class detectionPhase(initIsm):
         :return: toa in electrons
         """
         #TODO
-        toa = toa * QE
-        return toa
+        return toae
 
-    #Funcion de simula pixeles maos
     def badDeadPixels(self, toa,bad_pix,dead_pix,bad_pix_red,dead_pix_red):
         """
         Bad and dead pixels simulation
@@ -138,10 +128,8 @@ class detectionPhase(initIsm):
         :return: toa in e- including bad & dead pixels
         """
         #TODO
-        toa[:, 5] = toa[:, 5] * (1 - bad_pix_red)
         return toa
 
-    #PAra añadir el efecto PRNU
     def prnu(self, toa, kprnu):
         """
         Adding the PRNU effect
@@ -150,13 +138,9 @@ class detectionPhase(initIsm):
         :return: TOA after adding PRNU [e-]
         """
         #TODO
-        # kprnu = 0.04
-        prnu_eff = np.random.normal(0, 1, toa.shape[1])  # Standard normal distribution
-        aux = (prnu_eff * kprnu) + 1
-        toa = aux * toa
         return toa
 
-    #Simulacion de señal
+
     def darkSignal(self, toa, kdsnu, T, Tref, ds_A_coeff, ds_B_coeff):
         """
         Dark signal simulation
@@ -169,9 +153,4 @@ class detectionPhase(initIsm):
         :return: TOA in [e-] with dark signal
         """
         #TODO
-        prnu_eff = np.abs(np.random.normal(0, 1, toa.shape[1]))  # Standard normal distribution
-        dsnu = prnu_eff * kdsnu
-        sd = ds_A_coeff * ((T / Tref) ** 3) * np.exp(-ds_B_coeff * ((1 / T) - (1 / Tref)))
-        ds = sd * (1 + dsnu)
-        toa = toa + ds
         return toa

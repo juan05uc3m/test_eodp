@@ -82,8 +82,7 @@ class opticalPhase(initIsm):
             plotF([], toa[idalt,:], title_str, xlabel_str, ylabel_str, self.outdir, saveas_str)
 
         return toa
-    #*****************************************************************#
-    #A continuación se completan las siguientes funciones....
+
     def rad2Irrad(self, toa, D, f, Tr):
         """
         Radiance to Irradiance conversion
@@ -106,11 +105,6 @@ class opticalPhase(initIsm):
         :return: TOA image in irradiances [mW/m2]
         """
         # TODO
-
-        GE = fft2(toa)
-        toa_ft = ifft2(GE * fftshift(Hsys))
-        toa_ft = np.real(toa_ft)
-
         return toa_ft
 
     def spectralIntegration(self, sgm_toa, sgm_wv, band):
@@ -122,23 +116,30 @@ class opticalPhase(initIsm):
         :return: TOA image 2D in radiances [mW/m2]
         """
         # TODO
-
-        toa = np.zeros((sgm_toa.shape[0], sgm_toa.shape[1]))
         isrf, wv_isrf = readIsrf(self.auxdir + '/' + self.ismConfig.isrffile, band)
-        isrf_normalized = isrf / np.sum(isrf)
-        print(np.sum(isrf_normalized))
         wv_isrf = wv_isrf * 1000
-        # Apply the filter
+        isrf_norm = isrf / np.sum(isrf)
+
+        # Compruebas si se ha normalizado correctamente (debe dar 1)
+        print("Is isrf normalized correctly? =", (np.sum(isrf_norm) == 1.0))
+
+        # Init. toa with zeros
+        toa = np.zeros((sgm_toa.shape[0], sgm_toa.shape[1]))
+
         for ialt in range(sgm_toa.shape[0]):
             for iact in range(sgm_toa.shape[1]):
                 cs = interp1d(sgm_wv, sgm_toa[ialt, iact, :], fill_value=(0, 0), bounds_error=False)
                 toa_i = cs(wv_isrf)
-                # multiply point by point with isrf_normalized
-                toa[ialt, iact] = np.sum(toa_i * isrf_normalized)
 
-                # sum the resulting vector
+                # 1. point by point mult with isrf NORMALIZED
+                toa_integrator = toa_i * isrf_norm
 
-                # assign to the toa[ialt,iact] position
+                # 2. then sum the resulting vector
+                toa_sum = np.sum(toa_integrator)
+
+                # 3. then assign to the toa[ialt, iact] position
+                toa[ialt, iact] = toa_sum
+
         return toa
 
 

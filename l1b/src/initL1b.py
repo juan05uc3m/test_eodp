@@ -15,5 +15,4 @@ class initL1b(baseModule):
         self.l1bConfig = l1bConfig()
 
         # Make sure the logger is enabled
-        #ecualizacion?
         self.logger.disabled = False

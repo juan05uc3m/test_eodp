@@ -50,6 +50,7 @@ class mtf:
 
         # Diffraction MTF
         self.logger.debug("Calculation of the diffraction MTF")
+        print("Hasta aqui debugguea para ver los valores")
         Hdiff = self.mtfDiffract(fr2D)
 
         # Defocus
@@ -69,7 +70,7 @@ class mtf:
 
         # Calculate the System MTF
         self.logger.debug("Calculation of the Sysmtem MTF by multiplying the different contributors")
-        Hsys = Hdiff * Hdefoc * Hwfe * Hdet * Hsmear * Hmotion
+        Hsys = 1 # dummy
 
         # Plot cuts ACT/ALT of the MTF
         self.plotMtf(Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band)
@@ -92,26 +93,36 @@ class mtf:
         :return fnAlt: 1D normalised frequencies 2D ALT (f/(1/w))
         """
         #TODO
-        fstepAlt = 1 / nlines / w
-        fstepAct = 1 / ncolumns / w
-        eps = 1e-10
-        fAlt = np.arange(-1 / (2 * w), 1 / (2 * w) - eps, fstepAlt)
-        fAct = np.arange(-1 / (2 * w), 1 / (2 * w) - eps, fstepAct)
-        fcutoff = D / (lambd * focal)
 
-        # normalize fAct & fAlt
-        fnAct = fAct / (1 / w)
+        #hacemos la normalizacion de las frecuencias
+        fsAlt = 1 / nlines / w
+        fsAct = 1 / ncolumns / w
+
+        #importante poner parentesis porque despues no sale bien
+        eps = 1e-10
+        fAlt = np.arange(-1 / (2 * w), 1 / (2 * w) - eps, fsAlt)
+
+        fAct = np.arange(-1 / (2 * w), 1 / (2 * w) - eps, fsAct)
+
+        fc = D / (lambd * focal)
+
+        # Normalized 1D frequencies
+        fnAct = fAct / (1 / w) #pones pareentesis porque sino se queda rayado
         fnAlt = fAlt / (1 / w)
-        frAct = fAct / fcutoff
-        frAlt = fAlt / fcutoff
-        [fnAltxx, fnActxx] = np.meshgrid(fnAlt, fnAct,
-                                         indexing='ij')  # Please use ‘ij’ indexing or you will get the transpose
-        fn2D = np.sqrt(fnAltxx * fnAltxx + fnActxx * fnActxx)
-        [fnAltxx, fnActxx] = np.meshgrid(frAlt, frAct,
-                                         indexing='ij')  # Please use ‘ij’ indexing or you will get the transpose
-        fr2D = np.sqrt(fnAltxx * fnAltxx + fnActxx * fnActxx)
+
+        #frecuencias relativas
+        # Relative 1D frequencies
+        frAct = fAct / fc
+        frAlt = fAlt / fc
+
+        # 2D frequencies
+        [fnAltxx, fnActxx] = np.meshgrid(fnAlt, fnAct, indexing='ij')
+        fn2D = np.sqrt(fnAltxx ** 2 + fnActxx ** 2)
+        [frAltxx, frActxx] = np.meshgrid(frAlt, frAct, indexing='ij')
+        fr2D = np.sqrt(frAltxx ** 2 + frActxx ** 2)
 
         return fn2D, fr2D, fnAct, fnAlt
+
 
     def mtfDiffract(self,fr2D):
         """
@@ -120,7 +131,6 @@ class mtf:
         :return: diffraction MTF
         """
         #TODO
-        Hdiff = (2 / np.pi) * (np.arccos(fr2D) - fr2D * (1 - fr2D ** 2) ** (1 / 2))
         return Hdiff
 
 
@@ -134,8 +144,6 @@ class mtf:
         :return: Defocus MTF
         """
         #TODO
-        x = np.pi * defocus * fr2D * (1 - fr2D)
-        Hdefoc = (2 * j1(x)) / x
         return Hdefoc
 
     def mtfWfeAberrations(self, fr2D, lambd, kLF, wLF, kHF, wHF):
@@ -150,8 +158,6 @@ class mtf:
         :return: WFE Aberrations MTF
         """
         #TODO
-        Hwfe = np.exp(-fr2D * (1 - fr2D) * (kLF * (wLF / lambd) ** 2 + kHF * (wHF / lambd) ** 2))
-
         return Hwfe
 
     def mtfDetector(self,fn2D):
@@ -161,8 +167,6 @@ class mtf:
         :return: detector MTF
         """
         #TODO
-        Hdet = np.abs(np.sinc(fn2D))
-
         return Hdet
 
     def mtfSmearing(self, fnAlt, ncolumns, ksmear):
@@ -174,9 +178,6 @@ class mtf:
         :return: Smearing MTF
         """
         #TODO
-        fnAlt = np.repeat(fnAlt[:, None], ncolumns, axis=1)
-        Hsmear = np.sinc(ksmear * fnAlt)
-
         return Hsmear
 
     def mtfMotion(self, fn2D, kmotion):
@@ -187,9 +188,6 @@ class mtf:
         :return: detector MTF
         """
         #TODO
-
-        Hmotion = np.sinc(fn2D * kmotion)
-
         return Hmotion
 
     def plotMtf(self,Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band):
