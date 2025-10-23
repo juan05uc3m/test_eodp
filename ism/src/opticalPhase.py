@@ -93,7 +93,14 @@ class opticalPhase(initIsm):
         :return: TOA image in irradiances [mW/m2]
         """
         # TODO
+
         toa = Tr * toa * (np.pi / 4) * (D / f) ** 2
+        factor = Tr * (np.pi / 4) * (D / f) ** 2
+        print(f"El valor de D es {D} ")
+        print(f"El valor de f es {f} ")
+        print(f"El valor de Tr es {Tr} ")
+        print("La fórmula aplicada en la conversión es: toa = Tr * toa * (np.pi / 4) * (D / f) ** 2 ")
+        print(f"El factor de conversión es: {factor}\n ")
         return toa
 
 

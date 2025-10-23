@@ -74,4 +74,57 @@ for i, (my, ref) in enumerate([(toa_ism_opt_0_juan, toa_ism_opt_0), (toa_ism_opt
 
 
 
+# ---------- Visualización del efecto de borde (ejemplo banda 0) ----------
+
+# Mostramos antes y después del filtro óptico
+plt.figure()
+
+plt.subplot(1,2,1)
+plt.imshow(toa_ism_isrf_2)
+plt.title("Before MTF filter (ISRF stage)")
+plt.colorbar()
+
+plt.subplot(1,2,2)
+plt.imshow(toa_ism_opt_2)
+plt.title("After MTF filter (Optical stage)")
+plt.colorbar()
+
+plt.show()
+
+# ---------- Mapa de diferencias ----------
+diff = toa_ism_opt_2 - toa_ism_isrf_2
+
+plt.figure()
+plt.imshow(diff, cmap='seismic', vmin=-0.01, vmax=0.01)
+plt.title("Difference (Optical - ISRF)")
+plt.colorbar(label="Radiance difference")
+plt.show()
+
+# ---------- Perfiles en el centro y cerca del borde ----------
+row_center = toa_ism_opt_0.shape[0] // 2
+row_edge = 5  # fila cercana al borde superior
+
+plt.figure(figsize=(8,4))
+plt.plot(toa_ism_isrf_2[row_center, :], label="Before MTF - Center")
+plt.plot(toa_ism_opt_2[row_center, :], label="After MTF - Center")
+plt.legend()
+plt.title("Central row comparison")
+plt.xlabel("Pixel column")
+plt.ylabel("TOA value")
+plt.show()
+
+plt.figure(figsize=(8,4))
+plt.plot(toa_ism_isrf_2[row_edge, :], label="Before MTF - Edge")
+plt.plot(toa_ism_opt_2[row_edge, :], label="After MTF - Edge")
+plt.legend()
+plt.title("Edge row comparison (Border effect)")
+plt.xlabel("Pixel column")
+plt.ylabel("TOA value")
+plt.show()
+
+
+
+
+
+
 

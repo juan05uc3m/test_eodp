@@ -218,6 +218,59 @@ class mtf:
         :param band: band
         :return: N/A
         """
+
+        """
+                Plot the central ALT position of the MTFs and the Nyquist frequency
+                """
+
+        # Índice central (posición del píxel central)
+        center_line = nlines // 2
+
+        # Cortes a lo largo del eje ALT (vertical)
+        mtf_diff = Hdiff[center_line, :]
+        mtf_def = Hdefoc[center_line, :]
+        mtf_wfe = Hwfe[center_line, :]
+        mtf_det = Hdet[center_line, :]
+        mtf_smear = Hsmear[center_line, :]
+        mtf_motion = Hmotion[center_line, :]
+        mtf_sys = Hsys[center_line, :]
+
+        # Frecuencia de Nyquist
+        nyquist = 0.5
+
+        # Filtra las frecuencias positivas
+        mask = fnAct >= 0
+        fnAct_pos = fnAct[mask]
+
+        mtf_diff = mtf_diff[mask]
+        mtf_def = mtf_def[mask]
+        mtf_wfe = mtf_wfe[mask]
+        mtf_det = mtf_det[mask]
+        mtf_smear = mtf_smear[mask]
+        mtf_motion = mtf_motion[mask]
+        mtf_sys = mtf_sys[mask]
+
+        plt.figure(figsize=(7, 5))
+        plt.plot(fnAct_pos, mtf_diff, color='navy', label='Optics Diffraction MTF')
+        plt.plot(fnAct_pos, mtf_def, color='blue', label='Defocus MTF')
+        plt.plot(fnAct_pos, mtf_wfe, color='orange', label='Wavefront Error Aberrations MTF')
+        plt.plot(fnAct_pos, mtf_det, color='red', label='Detector MTF')
+        plt.plot(fnAct_pos, mtf_smear, color='violet', label='Smearing MTF')
+        plt.plot(fnAct_pos, mtf_motion, color='brown', label='Motion blur MTF')
+        plt.plot(fnAct_pos, mtf_sys, color='green', label='System MTF')
+        plt.axvline(0.5, color='k', linestyle='--', label='Nyquist Limit')
+
+        plt.xlabel('Spatial frequencies f/(1/w) [-]')
+        plt.ylabel('MTF Values')
+        plt.title(f'Central ALT position of the MTFs and Nyquist in band ->VNIR-{band}.')
+        plt.legend(fontsize=8)
+        plt.grid(True)
+        plt.tight_layout()
+
+        # Guardar y mostrar
+        path = os.path.join(directory, f"MTF_band{band}_ALT.png")
+        plt.savefig(path, dpi=300)
+        plt.show()
         #TODO
 
 

@@ -123,6 +123,7 @@ class detectionPhase(initIsm):
         :return: toa in electrons
         """
         #TODO
+        #hay que hacer que sature
         toae = toa *QE
         return toae
 
