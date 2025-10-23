@@ -105,6 +105,14 @@ class detectionPhase(initIsm):
         :return: Toa in photons
         """
         #TODO
+
+        Ein = (toa / 1000) * area_pix * tint
+
+        cte_h = self.constants.h_planck
+        c = self.constants.speed_light
+        Ephoton = (cte_h * c) / wv
+
+        toa_ph = Ein / Ephoton
         return toa_ph
 
     def phot2Electr(self, toa, QE):
@@ -115,6 +123,7 @@ class detectionPhase(initIsm):
         :return: toa in electrons
         """
         #TODO
+        toae = toa *QE
         return toae
 
     def badDeadPixels(self, toa,bad_pix,dead_pix,bad_pix_red,dead_pix_red):
@@ -128,6 +137,8 @@ class detectionPhase(initIsm):
         :return: toa in e- including bad & dead pixels
         """
         #TODO
+
+        toa[:, 5] = toa[:, 5] * (1- bad_pix_red)
         return toa
 
     def prnu(self, toa, kprnu):
@@ -138,6 +149,11 @@ class detectionPhase(initIsm):
         :return: TOA after adding PRNU [e-]
         """
         #TODO
+
+        prnu = np.random.normal(0, 1, toa.shape[1]) * kprnu
+        for i in range(prnu.shape[0]):
+            toa[:, i] = toa[:, i] * (1 + prnu[i])
+
         return toa
 
 
@@ -153,4 +169,11 @@ class detectionPhase(initIsm):
         :return: TOA in [e-] with dark signal
         """
         #TODO
+
+        SD = ds_A_coeff * (T / Tref) ** 3 * np.exp(-ds_B_coeff * ((1 / T) - (1 / Tref)))
+        DSNU = np.abs(np.random.normal(0, 1, toa.shape[1])) * kdsnu
+        DS = SD * (1 + DSNU)
+        for i in range(DSNU.shape[0]):
+            toa[:, i] = toa[:, i] + DS[i]
+
         return toa

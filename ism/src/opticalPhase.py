@@ -122,11 +122,14 @@ class opticalPhase(initIsm):
         wv_isrf = wv_isrf * 1000
         isrf_norm = isrf / np.sum(isrf)
 
+        #usas np.round porque en algunas da 0.999999999999 y salia que era falso
         # Compruebas si se ha normalizado correctamente (debe dar 1)
-        if np.sum(isrf_norm) == 0:
-            print("¿Normalización correcta")
+        if np.round(np.sum(isrf_norm)) == 1:
+            print("Normalización correcta")
+            print(np.sum(isrf_norm))
         else:
             print("No se ha normalizado correctamente")
+            print(np.sum(isrf_norm))
 
         # Init. toa with zeros
         toa = np.zeros((sgm_toa.shape[0], sgm_toa.shape[1]))
