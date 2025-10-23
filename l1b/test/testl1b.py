@@ -3,30 +3,30 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #Resultados suyos
-toa_ref_0 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\output", "l1b_toa_VNIR-0.nc")
-toa_ref_1 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\output", "l1b_toa_VNIR-1.nc")
-toa_ref_2 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\output", "l1b_toa_VNIR-2.nc")
-toa_ref_3 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\output", "l1b_toa_VNIR-3.nc")
+toa_ref_0 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\output", "l1b_toa_VNIR-0.nc")
+toa_ref_1 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\output", "l1b_toa_VNIR-1.nc")
+toa_ref_2 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\output", "l1b_toa_VNIR-2.nc")
+toa_ref_3 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\output", "l1b_toa_VNIR-3.nc")
 
 
 #Con ganancia incluida
-toa_0 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\myoutputs", "l1b_toa_VNIR-0.nc")
-toa_1 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\myoutputs", "l1b_toa_VNIR-1.nc")
-toa_2 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\myoutputs", "l1b_toa_VNIR-2.nc")
-toa_3 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\myoutputs", "l1b_toa_VNIR-3.nc")
+toa_0 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\myoutputs", "l1b_toa_VNIR-0.nc")
+toa_1 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\myoutputs", "l1b_toa_VNIR-1.nc")
+toa_2 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\myoutputs", "l1b_toa_VNIR-2.nc")
+toa_3 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\myoutputs", "l1b_toa_VNIR-3.nc")
 
 #Señal que te llega
-toa_isrf_0 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP_TER_2021-20250918T152656Z-1-001\EODP_TER_2021\EODP-TS-ISM\output", "ism_toa_isrf_VNIR-0.nc")
-toa_isrf_1 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP_TER_2021-20250918T152656Z-1-001\EODP_TER_2021\EODP-TS-ISM\output", "ism_toa_isrf_VNIR-1.nc")
-toa_isrf_2 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP_TER_2021-20250918T152656Z-1-001\EODP_TER_2021\EODP-TS-ISM\output", "ism_toa_isrf_VNIR-2.nc")
-toa_isrf_3 = readToa(r"C:\\Users\juantej\PycharmProjects\EODP_TER_2021-20250918T152656Z-1-001\EODP_TER_2021\EODP-TS-ISM\output", "ism_toa_isrf_VNIR-3.nc")
+toa_isrf_0 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\output", "ism_toa_isrf_VNIR-0.nc")
+toa_isrf_1 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\output", "ism_toa_isrf_VNIR-1.nc")
+toa_isrf_2 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\output", "ism_toa_isrf_VNIR-2.nc")
+toa_isrf_3 = readToa(r"C:\\Users\juant\EODP_DATA\\EODP-TS-ISM\output", "ism_toa_isrf_VNIR-3.nc")
 
 
 #Los resultados no ecualizados
-toa_0_no_eq = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\myoutputs_no_eq", "l1b_toa_VNIR-0.nc")
-toa_1_no_eq = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\myoutputs_no_eq", "l1b_toa_VNIR-1.nc")
-toa_2_no_eq = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\myoutputs_no_eq", "l1b_toa_VNIR-2.nc")
-toa_3_no_eq = readToa(r"C:\\Users\juantej\PycharmProjects\EODP-TS-L1B\myoutputs_no_eq", "l1b_toa_VNIR-3.nc")
+toa_0_no_eq = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\myoutputs_no_eq", "l1b_toa_VNIR-0.nc")
+toa_1_no_eq = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\myoutputs_no_eq", "l1b_toa_VNIR-1.nc")
+toa_2_no_eq = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\myoutputs_no_eq", "l1b_toa_VNIR-2.nc")
+toa_3_no_eq = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-L1B\myoutputs_no_eq", "l1b_toa_VNIR-3.nc")
 
 #APARTADO1
 def check_band(toa_my, toa_ref, tol=0.01):
@@ -73,8 +73,8 @@ for i, (toa_band, toa_isrf_band) in enumerate(zip(toa_restored_list, toa_isrf_li
     plt.title(f"Comparación Banda {i} - Línea ALT central ({alt_central})")
     plt.legend()
     plt.grid(True)
-    plt.show()
 
+plt.show(block=False)
 # --- Comparación resultados míos vs no ecualizados ---
 
 # Central ALT (fila central)
@@ -98,11 +98,11 @@ for i in range(4):
     # Gráfico comparativo
     plt.figure(figsize=(10,6))
     plt.plot(mine, label=f"Mis resultados (Banda {i})", linewidth=2)
-    plt.plot(no_eq, label=f"No ecualizado (Banda {i})", linestyle="--", linewidth=2)
+    plt.plot( no_eq, label=f"No ecualizado (Banda {i})", linestyle="--", linewidth=2)
     plt.xlabel("Índice espectral (150 píxeles)")
     plt.ylabel("TOA Radiance (a.u.)")
     plt.title(f"Comparación Mis Resultados vs No-EQ - Banda {i} (ALT central={alt_central})")
     plt.legend()
     plt.grid(True)
-    plt.show()
 
+plt.show()
