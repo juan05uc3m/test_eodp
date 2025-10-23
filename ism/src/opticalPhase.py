@@ -105,6 +105,8 @@ class opticalPhase(initIsm):
         :return: TOA image in irradiances [mW/m2]
         """
         # TODO
+        GE= fft2(toa)
+        toa_ft = np.real(ifft2(GE * fftshift(Hsys)))
         return toa_ft
 
     def spectralIntegration(self, sgm_toa, sgm_wv, band):
@@ -121,7 +123,10 @@ class opticalPhase(initIsm):
         isrf_norm = isrf / np.sum(isrf)
 
         # Compruebas si se ha normalizado correctamente (debe dar 1)
-        print("Is isrf normalized correctly? =", (np.sum(isrf_norm) == 1.0))
+        if np.sum(isrf_norm) == 0:
+            print("¿Normalización correcta")
+        else:
+            print("No se ha normalizado correctamente")
 
         # Init. toa with zeros
         toa = np.zeros((sgm_toa.shape[0], sgm_toa.shape[1]))
