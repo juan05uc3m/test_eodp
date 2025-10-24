@@ -38,39 +38,45 @@ toa_ism_opt_3_juan = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputdia
 def check_band(toa_my, toa_ref, tol=0.01):
     # Diferencia relativa en porcentaje
     diff = np.abs(toa_my - toa_ref) / np.maximum(toa_ref, 1e-12) * 100
+    diff_flat = diff.flatten()
 
-    # Media y sigma
-    mu = np.mean(diff)
-    sigma = np.std(diff)
+    # Cuántos píxeles tienen diferencia < tol
+    count_below_tol = np.sum(diff_flat < tol)
 
-    # Límite 3-sigma
-    threshold = mu + 3*sigma
+    # Cálculo de media y sigma para evaluar el 3-sigma
+    mu = np.mean(diff_flat)
+    sigma = np.std(diff_flat)
+    threshold = mu + 3 * sigma
 
-    # ¿Está por debajo del 0.01%?
     ok = threshold < tol
-    return mu, sigma, threshold, ok
+    return ok, count_below_tol
 
-for i, (my, ref) in enumerate([(toa_ism_isrf_0_juan, toa_ism_isrf_0), (toa_ism_isrf_1_juan, toa_ism_isrf_1),
-                               (toa_ism_isrf_2_juan, toa_ism_isrf_2), (toa_ism_isrf_3_juan, toa_ism_isrf_3)]):
-    mu, sigma, thr, ok = check_band(my, ref)
-    print(f"Banda {i}: media={mu:.3f}, sigma={sigma:.3f}, límite_3σ={thr:.3f}, Cumple={ok}")
 
-    if ok:
-        print(f"La banda {i} cumple con el umbral establecido.\n")
-    else:
-        print(f"La banda {i} **NO** cumple con el umbral establecido.\n")
+# --- Comparación ism_toa_isrf ---
+print("\nComparison ism_toa_isrf\n")
+for i, (my, ref) in enumerate([
+    (toa_ism_isrf_0_juan, toa_ism_isrf_0),
+    (toa_ism_isrf_1_juan, toa_ism_isrf_1),
+    (toa_ism_isrf_2_juan, toa_ism_isrf_2),
+    (toa_ism_isrf_3_juan, toa_ism_isrf_3)
+]):
+    ok, count = check_band(my, ref)
+    print(f"Band {i}: {'meets the condition' if ok else 'do not meet the condition'}")
+    print(f"Number of pixels with < 0.01%: {count}\n")
 
-#Ahora lo compruebo para los resultados del ism_optical
 
-for i, (my, ref) in enumerate([(toa_ism_opt_0_juan, toa_ism_opt_0), (toa_ism_opt_1_juan, toa_ism_opt_1),
-                               (toa_ism_opt_2_juan, toa_ism_opt_2), (toa_ism_opt_3_juan, toa_ism_opt_3)]):
-    mu, sigma, thr, ok = check_band(my, ref)
-    print(f"Banda {i}: media={mu:.3f}, sigma={sigma:.3f}, límite_3σ={thr:.3f}, Cumple={ok}")
+# --- Comparación ism_toa_optical ---
+print("\n=== Comparison ism_toa_optical ===\n")
+for i, (my, ref) in enumerate([
+    (toa_ism_opt_0_juan, toa_ism_opt_0),
+    (toa_ism_opt_1_juan, toa_ism_opt_1),
+    (toa_ism_opt_2_juan, toa_ism_opt_2),
+    (toa_ism_opt_3_juan, toa_ism_opt_3)
+]):
+    ok, count = check_band(my, ref)
+    print(f"Band {i}: {'meets the condition' if ok else 'do not meet the condition'}")
+    print(f"Number of pixels with < 0.01%: {count}\n")
 
-    if ok:
-        print(f"La banda {i} opt cumple con el umbral establecido.\n")
-    else:
-        print(f"La banda {i} opt **NO** cumple con el umbral establecido.\n")
 
 
 
@@ -124,7 +130,37 @@ plt.show()
 
 
 
+#SINCE THIS POINT I WILL MAKE THE ISM-0002 TEST
 
+
+#Loading her outputs...
+toa_ism_0 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\output", "ism_toa_VNIR-0.nc")
+toa_ism_1 = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\output", "ism_toa_VNIR-1.nc")
+toa_ism_2  = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\output", "ism_toa_VNIR-2.nc")
+toa_ism_3  = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\output", "ism_toa_VNIR-3.nc")
+
+#Loading my outputs....
+
+toa_ism_0_juan = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputdia4", "ism_toa_VNIR-0.nc")
+toa_ism_1_juan = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputdia4", "ism_toa_VNIR-1.nc")
+toa_ism_2_juan = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputdia4", "ism_toa_VNIR-2.nc")
+toa_ism_3_juan = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputdia4", "ism_toa_VNIR-3.nc")
+
+
+#AP1, we need to find out if our outputs are correct
+
+
+# --- Comparación ism_toa_isrf ---
+print("\nComparison ism_toa_VNIR\n")
+for i, (my, ref) in enumerate([
+    (toa_ism_0_juan, toa_ism_0),
+    (toa_ism_1_juan, toa_ism_1),
+    (toa_ism_2_juan, toa_ism_2),
+    (toa_ism_3_juan, toa_ism_3)
+]):
+    ok, count = check_band(my, ref)
+    print(f"Band {i}: {'meets the condition' if ok else 'do not meet the condition'}")
+    print(f"Number of pixels with < 0.01%: {count}\n")
 
 
 

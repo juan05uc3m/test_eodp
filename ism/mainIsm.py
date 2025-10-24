@@ -11,3 +11,6 @@ outdir = r"C:\\Users\\juant\\EODP_DATA\\\EODP-TS-ISM\\myoutputdia4"
 # Initialise the ISM
 myIsm = ism(auxdir, indir, outdir)
 myIsm.processModule()
+
+
+

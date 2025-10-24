@@ -22,7 +22,7 @@ class detectionPhase(initIsm):
         # -------------------------------------------------------------------------------
         self.logger.info("EODP-ALG-ISM-2010: Irradiances to Photons")
         area_pix = self.ismConfig.pix_size * self.ismConfig.pix_size # [m2]
-        toa = self.irrad2Phot(toa, area_pix, self.ismConfig.t_int, self.ismConfig.wv[int(band[-1])])
+        toa = self.irrad2Phot(toa, area_pix, self.ismConfig.t_int, self.ismConfig.wv[int(band[-1])], int(band[-1]))
 
         self.logger.debug("TOA [0,0] " +str(toa[0,0]) + " [ph]")
 
@@ -95,7 +95,7 @@ class detectionPhase(initIsm):
         return toa
 
 
-    def irrad2Phot(self, toa, area_pix, tint, wv):
+    def irrad2Phot(self, toa, area_pix, tint, wv, contador):
         """
         Conversion of the input Irradiances to Photons
         :param toa: input TOA in irradiances [mW/m2]
@@ -105,14 +105,16 @@ class detectionPhase(initIsm):
         :return: Toa in photons
         """
         #TODO
-
         Ein = (toa / 1000) * area_pix * tint
 
         cte_h = self.constants.h_planck
         c = self.constants.speed_light
         Ephoton = (cte_h * c) / wv
-
         toa_ph = Ein / Ephoton
+
+        factor = ((area_pix * tint * wv)/ (1000 * cte_h * c))
+        print(f"\n============================================\n")
+        print(f"The conversion factor for the band {contador} is: {factor}\n ")
         return toa_ph
 
     def phot2Electr(self, toa, QE):
@@ -125,6 +127,9 @@ class detectionPhase(initIsm):
         #TODO
         #hay que hacer que sature
         toae = toa *QE
+        factor= QE
+        print(f"\n============================================\n")
+        print(f"The conversion factor photon to electrons is: {factor}\n ")
         return toae
 
     def badDeadPixels(self, toa,bad_pix,dead_pix,bad_pix_red,dead_pix_red):

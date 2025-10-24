@@ -96,11 +96,11 @@ class opticalPhase(initIsm):
 
         toa = Tr * toa * (np.pi / 4) * (D / f) ** 2
         factor = Tr * (np.pi / 4) * (D / f) ** 2
-        print(f"El valor de D es {D} ")
-        print(f"El valor de f es {f} ")
-        print(f"El valor de Tr es {Tr} ")
-        print("La fórmula aplicada en la conversión es: toa = Tr * toa * (np.pi / 4) * (D / f) ** 2 ")
-        print(f"El factor de conversión es: {factor}\n ")
+        print(f"The value of D is {D} ")
+        print(f"The value of f is  {f} ")
+        print(f"The value of Tr is  {Tr} ")
+        print("The formula applied in this conversion is: toa = Tr * toa * (np.pi / 4) * (D / f) ** 2 ")
+        print(f"The conversion factor is: {factor}\n ")
         return toa
 
 

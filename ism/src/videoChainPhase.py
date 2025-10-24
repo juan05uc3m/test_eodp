@@ -56,7 +56,9 @@ class videoChainPhase(initIsm):
         :return: output toa in [V]
         """
         #TODO
-
+        factor = OCF * gain_adc
+        print(f"\n============================================\n")
+        print(f"The conversion factor electrons to Volts is: {factor}\n ")
         toa = toa * OCF * gain_adc
         return toa
 
@@ -70,7 +72,12 @@ class videoChainPhase(initIsm):
         :return: toa in digital counts
         """
         #TODO
+
         max_value = 2 ** bit_depth - 1
+
+        factor = 1 / (max_voltage - min_voltage) * max_value
+        print(f"\n============================================\n")
+        print(f"The conversion factor Volts to Digital numbers is: {factor}\n ")
         toa_dn = np.round((toa / (max_voltage - min_voltage)) * max_value)
         for i in range(toa_dn.shape[0]):
             for j in range(toa_dn.shape[1]):
