@@ -150,7 +150,7 @@ toa_ism_3_juan = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputdia4", 
 #AP1, we need to find out if our outputs are correct
 
 
-# --- Comparación ism_toa_isrf ---
+# --- Comparación ism_toa_VNIR ---
 print("\nComparison ism_toa_VNIR\n")
 for i, (my, ref) in enumerate([
     (toa_ism_0_juan, toa_ism_0),
@@ -162,5 +162,28 @@ for i, (my, ref) in enumerate([
     print(f"Band {i}: {'meets the condition' if ok else 'do not meet the condition'}")
     print(f"Number of pixels with < 0.01%: {count}\n")
 
+
+#Saturation
+
+bit_depth = 12
+max_dn = 2**bit_depth - 1
+
+toa_list = [
+    ("VNIR-0", toa_ism_0_juan),
+    ("VNIR-1", toa_ism_1_juan),
+    ("VNIR-2", toa_ism_2_juan),
+    ("VNIR-3", toa_ism_3_juan)
+]
+
+print("\n========== SATURATION CHECK PER BAND ==========\n")
+for band_name, toa in toa_list:
+    total_pixels = toa.size
+    saturated_pixels = np.sum(toa >= max_dn)
+    percentage = 100.0 * saturated_pixels / total_pixels
+
+    print(f"Band: {band_name}")
+    print(f"  Total pixels: {total_pixels}")
+    print(f"  Saturated pixels: {saturated_pixels}")
+    print(f"  Percentage: {percentage:.2f}%\n")
 
 
