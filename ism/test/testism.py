@@ -187,3 +187,53 @@ for band_name, toa in toa_list:
     print(f"  Percentage: {percentage:.2f}%\n")
 
 
+#Se representarán los últimos outputs realizados
+#Plot for all bands the outputs of the ISM, the TOA radiances after the optical, the detection and the VCU stages.
+
+
+
+#Loading ism_opt
+
+toa_ism_opt_0_def = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_optical_VNIR-0.nc")
+toa_ism_opt_1_def = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_optical_VNIR-1.nc")
+toa_ism_opt_2_def = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_optical_VNIR-2.nc")
+toa_ism_opt_3_def = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_optical_VNIR-3.nc")
+
+
+#Loading ism_VCU
+toa_ism_det_0_def = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_detection_VNIR-0.nc")
+toa_ism_det_1_def = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_detection_VNIR-1.nc")
+toa_ism_det_2_def  = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_detection_VNIR-2.nc")
+toa_ism_det_3_def  = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_detection_VNIR-3.nc")
+
+#Loading
+toa_ism_0_def = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_VNIR-0.nc")
+toa_ism_1_def = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_VNIR-1.nc")
+toa_ism_2_def  = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_VNIR-2.nc")
+toa_ism_3_def  = readToa(r"C:\\Users\juant\EODP_DATA\EODP-TS-ISM\myoutputism", "ism_toa_VNIR-3.nc")
+
+# === Agrupamos las fases disponibles ===
+toa_ism_list = [toa_ism_0_def, toa_ism_1_def, toa_ism_2_def, toa_ism_3_def]
+toa_opt_list = [toa_ism_opt_0_def, toa_ism_opt_1_def, toa_ism_opt_2_def, toa_ism_opt_3_def]
+toa_det_list = [toa_ism_det_0_def, toa_ism_det_1_def, toa_ism_det_2_def, toa_ism_det_3_def]
+
+# === Función para representar una fase (como en Panoply) ===
+def plot_phase(toa_list, phase_name):
+    fig, axes = plt.subplots(1, 4, figsize=(18, 4))
+    plt.suptitle(f"TOA Radiance - {phase_name}", fontsize=16)
+
+    for i, toa in enumerate(toa_list):
+        im = axes[i].imshow(toa, cmap='viridis')
+        axes[i].set_title(f"VNIR-{i}")
+        axes[i].axis('off')
+        plt.colorbar(im, ax=axes[i], fraction=0.046, pad=0.04)
+
+    plt.tight_layout()
+    plt.show(block=True)
+
+# === Mostrar las tres fases ===
+plot_phase(toa_ism_list, "ISM (Input Scene)")
+plot_phase(toa_opt_list, "Optical Stage")
+plot_phase(toa_det_list, "Detection Stage")
+
+#Al final las graficas mostradas en el report test estan hechas con panoply.
